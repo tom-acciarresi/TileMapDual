@@ -185,14 +185,10 @@ func read_tile(atlas: TileSetAtlasSource, sid: int, tile: Vector2i) -> void:
 		return
 	var terrain := data.terrain
 	if terrain != -1:
-		if terrain in terrains:
-			var prev_mapping = terrains[terrain]
-			push_warning(
-				"2 different tiles in this TileSet have the same Terrain type:\n" +
-				"1st: %s\n" % [prev_mapping] +
-				"2nd: %s" % [mapping]
-			)
-		terrains[terrain] = mapping
+		if not terrain in terrains:
+			terrains[terrain] = []
+		terrains[terrain].append(mapping)
+		
 	var filters = NEIGHBORHOOD_LAYERS[neighborhood]
 	for i in layers.size():
 		var layer: TerrainLayer = layers[i]

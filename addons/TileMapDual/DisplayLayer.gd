@@ -89,7 +89,7 @@ func update_tiles(cache: TileCache, updated_world_cells: Array) -> void:
 func update_tile(cache: TileCache, cell: Vector2i) -> void:
 	var get_cell_at_path := func(path): return cache.get_terrain_at(follow_path(cell, path))
 	var terrain_neighbors := _terrain.display_to_world_neighborhood.map(get_cell_at_path)
-	var mapping: Dictionary = _terrain.apply_rule(terrain_neighbors)
+	var mapping: Dictionary = _terrain.apply_rule(terrain_neighbors, cell)
 	var sid: int = mapping.sid
 	var tile: Vector2i = mapping.tile
 	set_cell(cell, sid, tile)
