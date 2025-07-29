@@ -47,11 +47,16 @@ var display_to_world_neighborhood: Array
 ##[br] See apply_rule() for more details.
 var _rules: Dictionary = {}
 
+## Generator for random placement of tiles
+var rand : RandomNumberGenerator
+## Random seed used to generate tiles deterministically
+var global_seed : int = 707
 
 func _init(fields: Dictionary) -> void:
 	self.terrain_neighborhood = fields.terrain_neighborhood
 	self.display_to_world_neighborhood = fields.display_to_world_neighborhood
-
+	self.rand = RandomNumberGenerator.new()
+	
 
 ## Register a new rule for a specific tile in an atlas.
 func _register_tile(data: TileData, mapping: Dictionary) -> void:
@@ -69,6 +74,7 @@ func _register_tile(data: TileData, mapping: Dictionary) -> void:
 				"Expected neighborhood: %s" % [terrain_neighborhood.map(Util.neighbor_name)]
 			)
 		return
+	mapping["prob"] = data.probability
 	_register_rule(terrain_neighbors, mapping)
 
 
@@ -79,20 +85,14 @@ func _register_rule(terrain_neighbors: Array, mapping: Dictionary) -> void:
 		if terrain not in node:
 			node[terrain] = {}
 		node = node[terrain]
-	if 'mapping' in node:
-		var prev_mapping = node.mapping
-		push_warning(
-			"2 different tiles in this TileSet have the same Terrain neighbors:\n" +
-			"Neighbor Configuration: %s\n" % [_neighbors_to_dict(terrain_neighbors)] +
-			"1st: %s\n" % [prev_mapping] +
-			"2nd: %s" % [mapping]
-		)
-	node.mapping = mapping
+	if not 'mappings' in node:
+		node.mappings = []
+	node.mappings.append(mapping)
 
 
 const TILE_EMPTY: Dictionary = {'sid': - 1, 'tile': Vector2i(-1, -1)}
 ## Returns the tile that should be used based on the surrounding terrain neighbors
-func apply_rule(terrain_neighbors: Array) -> Dictionary:
+func apply_rule(terrain_neighbors: Array, cell: Vector2i) -> Dictionary:
 	var is_empty := terrain_neighbors.all(func(terrain): return terrain == -1)
 	if is_empty:
 		return TILE_EMPTY
@@ -105,9 +105,17 @@ func apply_rule(terrain_neighbors: Array) -> Dictionary:
 		if terrain not in node:
 			return TILE_EMPTY
 		node = node[terrain]
-	if 'mapping' not in node:
+	if 'mappings' not in node:
 		return TILE_EMPTY
-	return node.mapping
+	
+	#random tile selection
+	var weights: Array= []
+	var index: int = 0
+	for mapping in node.mappings:
+		weights.append(mapping.prob)
+	rand.seed = hash(str(cell)+str(global_seed))
+	index = rand.rand_weighted(weights)
+	return node.mappings[index]
 
 
 ## Coerces all empty tiles to have a terrain of 0.
