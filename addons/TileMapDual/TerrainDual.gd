@@ -186,8 +186,7 @@ func read_tile(atlas: TileSetAtlasSource, sid: int, tile: Vector2i) -> void:
 	var terrain := data.terrain
 	if terrain != -1:
 		if not terrain in terrains:
-			terrains[terrain] = []
-		terrains[terrain].append(mapping)
+			terrains[terrain] = mapping
 		
 	var filters = NEIGHBORHOOD_LAYERS[neighborhood]
 	for i in layers.size():
