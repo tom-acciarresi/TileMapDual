@@ -1,15 +1,15 @@
-##[br] Reads a TileSet and dictates which tiles in the display map
-##[br] match up with its neighbors in the world map
 class_name TerrainDual
 extends Resource
+##[br] Reads a TileSet and dictates which tiles in the display map
+##[br] match up with its neighbors in the world map
 
-
-# Functions are ordered top to bottom in the transformation pipeline
-
-## Maps a TileSet to a Neighborhood.
-static func tileset_neighborhood(tile_set: TileSet) -> Neighborhood:
-	return GRID_NEIGHBORHOODS[Display.tileset_gridshape(tile_set)]
-
+## A specific neighborhood that the Display tiles will look at.
+enum Neighborhood {
+	SQUARE,
+	ISOMETRIC,
+	TRIANGLE_HORIZONTAL,
+	TRIANGLE_VERTICAL,
+}
 
 ## Maps a GridShape to a Neighborhood.
 const GRID_NEIGHBORHOODS = {
@@ -20,21 +20,11 @@ const GRID_NEIGHBORHOODS = {
 	Display.GridShape.HEX_HORI: Neighborhood.TRIANGLE_HORIZONTAL,
 	Display.GridShape.HEX_VERT: Neighborhood.TRIANGLE_VERTICAL,
 }
-
-
-## A specific neighborhood that the Display tiles will look at.
-enum Neighborhood {
-	SQUARE,
-	ISOMETRIC,
-	TRIANGLE_HORIZONTAL,
-	TRIANGLE_VERTICAL,
-}
-
-
 ## Maps a Neighborhood to a set of atlas terrain neighbors.
 const NEIGHBORHOOD_LAYERS := {
 	Neighborhood.SQUARE: [
-		{ # []
+		{
+			# []
 			'terrain_neighborhood': [
 				TileSet.CELL_NEIGHBOR_TOP_LEFT_CORNER,
 				TileSet.CELL_NEIGHBOR_TOP_RIGHT_CORNER,
@@ -50,7 +40,8 @@ const NEIGHBORHOOD_LAYERS := {
 		},
 	],
 	Neighborhood.ISOMETRIC: [
-		{ # <>
+		{
+			# <>
 			'terrain_neighborhood': [
 				TileSet.CELL_NEIGHBOR_TOP_CORNER,
 				TileSet.CELL_NEIGHBOR_RIGHT_CORNER,
@@ -66,7 +57,8 @@ const NEIGHBORHOOD_LAYERS := {
 		},
 	],
 	Neighborhood.TRIANGLE_HORIZONTAL: [
-		{ # v
+		{
+			# v
 			'terrain_neighborhood': [
 				TileSet.CELL_NEIGHBOR_BOTTOM_CORNER,
 				TileSet.CELL_NEIGHBOR_TOP_LEFT_CORNER,
@@ -78,7 +70,8 @@ const NEIGHBORHOOD_LAYERS := {
 				[TileSet.CELL_NEIGHBOR_TOP_RIGHT_SIDE],
 			],
 		},
-		{ # ^
+		{
+			# ^
 			'terrain_neighborhood': [
 				TileSet.CELL_NEIGHBOR_TOP_CORNER,
 				TileSet.CELL_NEIGHBOR_BOTTOM_LEFT_CORNER,
@@ -93,7 +86,8 @@ const NEIGHBORHOOD_LAYERS := {
 	],
 	# TODO: this is just TRIANGLE_HORIZONTAL but transposed. this can be refactored.
 	Neighborhood.TRIANGLE_VERTICAL: [
-		{ # >
+		{
+			# >
 			'terrain_neighborhood': [
 				TileSet.CELL_NEIGHBOR_RIGHT_CORNER,
 				TileSet.CELL_NEIGHBOR_TOP_LEFT_CORNER,
@@ -105,7 +99,8 @@ const NEIGHBORHOOD_LAYERS := {
 				[TileSet.CELL_NEIGHBOR_BOTTOM_LEFT_SIDE],
 			],
 		},
-		{ # <
+		{
+			# <
 			'terrain_neighborhood': [
 				TileSet.CELL_NEIGHBOR_LEFT_CORNER,
 				TileSet.CELL_NEIGHBOR_TOP_RIGHT_CORNER,
@@ -120,33 +115,30 @@ const NEIGHBORHOOD_LAYERS := {
 	],
 }
 
-
 ## The Neighborhood type of this TerrainDual.
 var neighborhood: Neighborhood
-
 ## Maps a terrain type to its sprite as registered in the TerrainDual.
 var terrains: Dictionary
-
 ## The TerrainLayers for this TerrainDual.
 var layers: Array
 var _tileset_watcher: TileSetWatcher
+
+
+# Functions are ordered top to bottom in the transformation pipeline
+## Maps a TileSet to a Neighborhood.
+static func tileset_neighborhood(tile_set: TileSet) -> Neighborhood:
+	return GRID_NEIGHBORHOODS[Display.tileset_gridshape(tile_set)]
+
+
 func _init(tileset_watcher: TileSetWatcher) -> void:
 	_tileset_watcher = tileset_watcher
 	_tileset_watcher.terrains_changed.connect(_changed, 1)
 	_changed()
 
 
-##[br] Emitted when any of the terrains change.
-##[br] NOTE: Prefer connecting to TerrainDual.changed instead of TileSetWatcher.terrains_changed.
-func _changed() -> void:
-	#print('SIGNAL EMITTED: changed(%s)' % {})
-	read_tileset(_tileset_watcher.tile_set)
-	emit_changed()
-
-
 ## Create rules for every atlas in a TileSet.
 func read_tileset(tile_set: TileSet) -> void:
-	terrains = {}
+	terrains = { }
 	layers = []
 	neighborhood = Neighborhood.SQUARE # default
 	if tile_set == null:
@@ -176,19 +168,29 @@ func read_atlas(atlas: TileSetAtlasSource, sid: int) -> void:
 ## Add a new rule for a specific tile in an atlas.
 func read_tile(atlas: TileSetAtlasSource, sid: int, tile: Vector2i) -> void:
 	var data := atlas.get_tile_data(tile, 0)
-	var mapping := {'sid': sid, 'tile': tile}
+	var mapping := { 'sid': sid, 'tile': tile }
 	var terrain_set := data.terrain_set
 	if terrain_set != 0:
 		push_warning(
-			"The tile at %s has a terrain set of %d. Only terrain set 0 is supported." % [mapping, terrain_set]
+			"The tile at %s has a terrain set of %d. \
+			Only terrain set 0 is supported." % [mapping, terrain_set],
 		)
 		return
 	var terrain := data.terrain
 	if terrain != -1:
 		if not terrain in terrains:
 			terrains[terrain] = mapping
-		
+
 	var filters = NEIGHBORHOOD_LAYERS[neighborhood]
 	for i in layers.size():
 		var layer: TerrainLayer = layers[i]
 		layer._register_tile(data, mapping)
+
+
+##[br] Emitted when any of the terrains change.
+##[br] NOTE: Prefer connecting to TerrainDual.changed
+## instead of TileSetWatcher.terrains_changed.
+func _changed() -> void:
+	#print('SIGNAL EMITTED: changed(%s)' % {})
+	read_tileset(_tileset_watcher.tile_set)
+	emit_changed()

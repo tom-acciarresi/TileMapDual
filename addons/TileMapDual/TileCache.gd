@@ -1,7 +1,6 @@
-## Caches the sprite location and terrains of each tile in the TileMapDual world grid.
 class_name TileCache
 extends Resource
-
+## Caches the sprite location and terrains of each tile in the TileMapDual world grid.
 
 ##[br] Maps a cell coordinate to the stored tile data.
 ##[codeblock]
@@ -14,9 +13,12 @@ extends Resource
 ##    } = # The data stored at this tile.
 ##  }
 ##[/codeblock]
-var cells := {}
+var cells := { }
+
+
 func _init() -> void:
 	pass
+
 
 ##[br] Updates specific cells of the TileCache based on the current layer data at those points.
 ##[br] Makes corrections in case the user accidentally places invalid tiles.
@@ -51,7 +53,7 @@ func update(world: TileMapLayer, edited: Array = cells.keys()) -> void:
 			tile = cached.tile
 			world.set_cell(cell, sid, tile)
 			data = world.get_cell_tile_data(cell)
-		cells[cell] = {'sid': sid, 'tile': tile, 'terrain': data.terrain}
+		cells[cell] = { 'sid': sid, 'tile': tile, 'terrain': data.terrain }
 
 
 ## Returns the symmetric difference (xor) of two tile caches.
