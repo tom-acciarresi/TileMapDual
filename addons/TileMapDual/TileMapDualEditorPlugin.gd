@@ -29,7 +29,7 @@ func _enter_tree() -> void:
 	TileMapDual.autotile = autotile
 	TileMapDual.popup = popup
 	# finish
-	print("plugin TileMapDual loaded")
+	# print("plugin TileMapDual loaded")
 
 
 func _exit_tree() -> void:
@@ -41,7 +41,7 @@ func _exit_tree() -> void:
 	remove_custom_type("CursorDual")
 	remove_custom_type("TileMapDual")
 	# finish
-	print("plugin TileMapDual unloaded")
+	# print("plugin TileMapDual unloaded")
 
 
 # HACK: functions that reference EditorPlugin, directly or indirectly,
