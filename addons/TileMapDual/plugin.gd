@@ -11,18 +11,18 @@ func _enter_tree() -> void:
 	# assign singleton instance
 	instance = self
 	# register custom nodes
-	const tile_map_dual_icon := preload("TileMapDual.svg")
+	const TILE_MAP_DUAL_ICON := preload("TileMapDual.svg")
 	add_custom_type(
 		"TileMapDual",
 		"TileMapLayer",
 		preload("TileMapDual.gd"),
-		tile_map_dual_icon,
+		TILE_MAP_DUAL_ICON,
 	)
 	add_custom_type(
 		"TileMapDualLegacy",
 		"TileMapLayer",
 		preload("TileMapDualLegacy.gd"),
-		tile_map_dual_icon,
+		TILE_MAP_DUAL_ICON,
 	)
 	add_custom_type(
 		"CursorDual",
