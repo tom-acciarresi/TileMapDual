@@ -9,7 +9,7 @@ extends Sprite2D
 var cell: Vector2i
 var tile_size: Vector2
 var sprite_size: Vector2
-var terrain := 1
+var terrain: int = 1
 
 
 func _ready() -> void:

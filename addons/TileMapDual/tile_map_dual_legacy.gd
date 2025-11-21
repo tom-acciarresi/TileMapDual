@@ -27,7 +27,7 @@ enum Direction {
 
 ## Overlapping tiles from the World grid
 ## that a tile from the Dual grid has.
-const _NEIGHBORS := {
+const _NEIGHBORS: Dictionary[Direction, TileSet.CellNeighbor] = {
 	Direction.TOP: TileSet.CellNeighbor.CELL_NEIGHBOR_TOP_SIDE,
 	Direction.LEFT: TileSet.CellNeighbor.CELL_NEIGHBOR_LEFT_SIDE,
 	Direction.RIGHT: TileSet.CellNeighbor.CELL_NEIGHBOR_RIGHT_SIDE,
@@ -41,7 +41,7 @@ const _NEIGHBORS := {
 ## that a tile from the Dual grid has.
 ## To be used ONLY with isometric tilesets.
 ## CellNighbors are literal, even for Isometric
-const _NEIGHBORS_ISOMETRIC := {
+const _NEIGHBORS_ISOMETRIC: Dictionary[Direction, TileSet.CellNeighbor] = {
 	Direction.TOP: TileSet.CellNeighbor.CELL_NEIGHBOR_TOP_RIGHT_SIDE,
 	Direction.LEFT: TileSet.CellNeighbor.CELL_NEIGHBOR_TOP_LEFT_SIDE,
 	Direction.RIGHT: TileSet.CellNeighbor.CELL_NEIGHBOR_BOTTOM_RIGHT_SIDE,
@@ -55,7 +55,7 @@ const _NEIGHBORS_ISOMETRIC := {
 ## summation over all sketched NEIGHBOURS.
 ## Follows the official 2x2 template.
 ## Works for isometric as well.
-const _NEIGHBORS_TO_ATLAS: Dictionary = {
+const _NEIGHBORS_TO_ATLAS: Dictionary[Direction, Vector2i] = {
 	0: Vector2i(0, 3),
 	1: Vector2i(3, 3),
 	2: Vector2i(0, 0),

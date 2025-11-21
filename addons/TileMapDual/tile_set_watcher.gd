@@ -27,17 +27,17 @@ var tile_set: TileSet
 var tile_size: Vector2i
 ## caches the previous result of display.tileset_grid_shape(tile_set) to see when it changes.
 var grid_shape: Display.GridShape
-var _flag_tileset_deleted := false
-var _flag_tileset_created := false
-var _flag_tileset_resized := false
-var _flag_tileset_reshaped := false
-var _flag_atlas_added := false
-var _flag_terrains_changed := false
-var _flag_tileset_changed := false
+var _flag_tileset_deleted: bool = false
+var _flag_tileset_created: bool = false
+var _flag_tileset_resized: bool = false
+var _flag_tileset_reshaped: bool = false
+var _flag_atlas_added: bool = false
+var _flag_terrains_changed: bool = false
+var _flag_tileset_changed: bool = false
 # Cached variables from the previous frame
 # These are used to compare what changed between frames
 var _cached_source_count: int = 0
-var _cached_sids := { }
+var _cached_sids: Dictionary[int, AtlasWatcher] = { }
 
 
 func _init(tile_set: TileSet) -> void:
@@ -132,7 +132,7 @@ func _update_tileset() -> void:
 ## Does not check which ones were deleted.
 func _update_tileset_atlases() -> void:
 	# Update all tileset sources
-	var source_count := tile_set.get_source_count()
+	var source_count: int = tile_set.get_source_count()
 
 	# Only if an asset was added or removed
 	# FIXME?: may break on add+remove in 1 frame
@@ -141,7 +141,7 @@ func _update_tileset_atlases() -> void:
 	_cached_source_count = source_count
 
 	# Process the new atlases in the TileSet
-	var sids := { }
+	var sids: Dictionary[int, AtlasWatcher] = { }
 	for i in source_count:
 		var sid: int = tile_set.get_source_id(i)
 		if sid in _cached_sids:

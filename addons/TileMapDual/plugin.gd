@@ -7,7 +7,7 @@ extends EditorPlugin
 # so that we don't get 300 lines of the same warnings pushed to console every time we undo/redo
 func _enter_tree() -> void:
 	# register custom nodes
-	const TILE_MAP_DUAL_ICON := preload("tile_map_dual.svg")
+	const TILE_MAP_DUAL_ICON: Texture2D = preload("tile_map_dual.svg")
 	add_custom_type(
 		"TileMapDual",
 		"TileMapLayer",
@@ -64,7 +64,7 @@ func popup(title: String, message: String) -> void:
 ## Automatically generate terrains when the atlas is initialized.
 func autotile(_source_id: int, atlas: TileSetAtlasSource, tile_set: TileSet):
 	print_stack()
-	var urm := get_undo_redo()
+	var urm: EditorUndoRedoManager = get_undo_redo()
 	urm.create_action(
 		"Create tiles in non-transparent texture regions",
 		UndoRedo.MergeMode.MERGE_ALL,

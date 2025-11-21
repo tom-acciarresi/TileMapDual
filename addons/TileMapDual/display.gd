@@ -18,7 +18,7 @@ enum GridShape {
 
 ##[br] How to deal with every available GridShape.
 ##[br] See [DisplayLayer] for more information about these fields.
-const GRIDS: Dictionary = {
+const GRIDS: Dictionary[GridShape, Array] = {
 	GridShape.SQUARE: [
 		{
 			# []
@@ -142,7 +142,7 @@ func _world_tiles_changed(changed: Array) -> void:
 func _create_layers() -> void:
 	#print('GRID SHAPE: %s' % _tileset_watcher.grid_shape)
 	var grid: Array = GRIDS[_tileset_watcher.grid_shape]
-	for i in grid.size():
+	for i: int in grid.size():
 		var layer_config: Dictionary = grid[i]
 		#print('layer_config: %s' % layer_config)
 		var layer := DisplayLayer.new(world, _tileset_watcher, layer_config, terrain.layers[i])

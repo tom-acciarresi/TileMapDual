@@ -79,15 +79,18 @@ func update_tiles(cache: TileCache, updated_world_cells: Array) -> void:
 	for path: Array in _terrain.display_to_world_neighborhood:
 		path = path.map(Util.reverse_neighbor)
 		for world_cell: Vector2i in updated_world_cells:
-			var display_cell := follow_path(world_cell, path)
+			var display_cell: Vector2i = follow_path(world_cell, path)
 			if already_updated.insert(display_cell):
 				update_tile(cache, display_cell)
 
 
 ## Updates a specific world cell.
 func update_tile(cache: TileCache, cell: Vector2i) -> void:
-	var get_cell_at_path := func(path): return cache.get_terrain_at(follow_path(cell, path))
-	var terrain_neighbors := _terrain.display_to_world_neighborhood.map(get_cell_at_path)
+	var get_cell_at_path: Callable = func(
+			path,
+	):
+		return cache.get_terrain_at(follow_path(cell, path))
+	var terrain_neighbors: Array = _terrain.display_to_world_neighborhood.map(get_cell_at_path)
 	var mapping: Dictionary = _terrain.apply_rule(terrain_neighbors, cell)
 	var sid: int = mapping.sid
 	var tile: Vector2i = mapping.tile

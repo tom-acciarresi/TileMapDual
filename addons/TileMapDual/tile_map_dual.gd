@@ -74,7 +74,7 @@ func _process(delta: float) -> void: # Only used inside the editor
 ##[br] - terrain -1 completely removes the tile,
 ##[br] - and by default, terrain 0 is the empty tile.
 func draw_cell(cell: Vector2i, terrain: int = 1) -> void:
-	var terrains := _display.terrain.terrains
+	var terrains: Dictionary[int, Dictionary] = _display.terrain.terrains
 	if terrain not in terrains:
 		erase_cell(cell)
 		changed.emit()
@@ -144,8 +144,8 @@ func _make_self_invisible(startup: bool = false) -> void:
 ## Detects if godot is below v4.4.
 ## Only used to detect whether the _update_cells() function is usable.
 func _godot_is_below_4_4():
-	var version := Engine.get_version_info()
-	return version.major < 4 or version.major == 4 and version.minor < 4
+	var version: Dictionary = Engine.get_version_info()
+	return (version.major < 4) or (version.major == 4 and version.minor < 4)
 
 
 ## Called by signals when the tileset changes,
@@ -153,7 +153,7 @@ func _godot_is_below_4_4():
 func _changed() -> void:
 	_tileset_watcher.update(tile_set)
 
-	var updated_cells := []
+	var updated_cells: Array[Vector2i] = []
 	# HACK: double check all tiles every refresh
 	if godot_4_3_compatibility and tile_set != null:
 		var current_cells := TileCache.new()
