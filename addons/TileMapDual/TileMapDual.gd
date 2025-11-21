@@ -64,7 +64,7 @@ func _process(delta: float) -> void: # Only used inside the editor
 		_timer -= delta
 		return
 	_timer = refresh_time
-	call_deferred('_changed')
+	_changed.call_deferred()
 
 
 ##[br] Public method to add and remove tiles.

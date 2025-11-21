@@ -115,7 +115,7 @@ func _ready() -> void:
 func _process(_delta): # Only used inside the editor
 	if not self.tile_set:
 		return
-	call_deferred('_update_tileset')
+	_update_tileset.call_deferred()
 
 
 ## Copies properties from parent TileMapDual to child display tilemap
