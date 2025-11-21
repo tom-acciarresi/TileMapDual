@@ -90,14 +90,14 @@ var full_tile: Vector2i = Vector2i(2, 1)
 ## The opposed of full_tile. Used to erase sketched tiles.
 var empty_tile: Vector2i = Vector2i(0, 3)
 var is_isometric: bool = false
-var _filled_cells: Dictionary = {}
-var _emptied_cells: Dictionary = {}
+var _filled_cells: Dictionary = { }
+var _emptied_cells: Dictionary = { }
 var _tile_shape: TileSet.TileShape = TileSet.TileShape.TILE_SHAPE_SQUARE
 var _tile_size: Vector2i = Vector2i(16, 16)
 var _should_check_cells: bool = false
 ## Prevents checking the cells more than once when the entire tileset
 ## is being updated, which is indicated by `_should_check_cells`.
-var _checked_cells: Dictionary = {}
+var _checked_cells: Dictionary = { }
 var _atlas_id: int
 
 
@@ -180,14 +180,14 @@ func update_full_tileset() -> void:
 		if _is_world_tile_sketched(cell) == 1 or _is_world_tile_sketched(cell) == 0:
 			update_tile(cell)
 	_should_check_cells = false
-	_checked_cells = {}
+	_checked_cells = { }
 	# _checked_cells is only used when updating
 	# the whole tilemap to avoid repeating checks.
 	# This is skipped when updating tiles individually.
 
 
 func array_to_dict(array: Array) -> Dictionary:
-	var dict: Dictionary = {}
+	var dict: Dictionary = { }
 	for item in array:
 		dict[item] = true
 	return dict
