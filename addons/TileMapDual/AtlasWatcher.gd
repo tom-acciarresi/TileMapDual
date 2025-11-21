@@ -1,21 +1,21 @@
+class_name AtlasWatcher
 ##[br] Watches a TileSetAtlasSource for changes.
 ##[br] Causes its 'parent' TileSetWatcher to emit terrains_changed when the atlas changes.
 ##[br] Also emits parent.atlas_autotiled when it thinks the user auto-generated atlas tiles.
-class_name AtlasWatcher
 
 ## Prevents the number of seen atlases from extending to infinity.
 const UNDO_LIMIT = 1024
+
 ## Stores all of the atlas instance id's that have been seen before, to prevent autogen on redo.
 static var _registered_atlases := []
 
 ## The TileSetWatcher that created this AtlasWatcher. Used to send signals back.
 var parent: TileSetWatcher
-
 ## The Source ID of `self.atlas`.
 var sid: int
-
 ## The atlas to be watched for changes.
 var atlas: TileSetAtlasSource
+
 
 func _init(parent: TileSetWatcher, sid: int, atlas: TileSetAtlasSource) -> void:
 	self.parent = parent
@@ -28,7 +28,10 @@ func _init(parent: TileSetWatcher, sid: int, atlas: TileSetAtlasSource) -> void:
 		_registered_atlases.push_back(id)
 		if _registered_atlases.size() > UNDO_LIMIT:
 			_registered_atlases.pop_front()
-		atlas.changed.connect(_detect_autogen, ConnectFlags.CONNECT_DEFERRED | ConnectFlags.CONNECT_ONE_SHOT)
+		atlas.changed.connect(
+			_detect_autogen,
+			ConnectFlags.CONNECT_DEFERRED | ConnectFlags.CONNECT_ONE_SHOT,
+		)
 
 
 func _atlas_is_empty() -> bool:

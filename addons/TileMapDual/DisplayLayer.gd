@@ -1,26 +1,24 @@
+class_name DisplayLayer
+extends TileMapLayer
 ##[br] A single TileMapLayer whose purpose is to display tiles to maintain the Dual Grid illusion.
 ##[br] Its contents are automatically computed and updated based on:
 ##[br] - the contents of the parent TileMapDual
 ##[br] - the rules set in its assigned TerrainLayer
-class_name DisplayLayer
-extends TileMapLayer
-
 
 ##[br] How much to offset this DisplayLayer relative to the main TileMapDual grid.
 ##[br] This is independent of tile size.
 var offset: Vector2
-
 ## See TileSetWatcher.gd
 var _tileset_watcher: TileSetWatcher
-
 ## See TerrainDual.gd
 var _terrain: TerrainLayer
 
+
 func _init(
-	world: TileMapDual,
-	tileset_watcher: TileSetWatcher,
-	fields: Dictionary,
-	layer: TerrainLayer
+		world: TileMapDual,
+		tileset_watcher: TileSetWatcher,
+		fields: Dictionary,
+		layer: TerrainLayer,
 ) -> void:
 	#print('initializing Layer...')
 	update_properties(world)
@@ -61,7 +59,8 @@ func update_properties(parent: TileMapDual) -> void:
 	self.y_sort_enabled = parent.y_sort_enabled
 	self.modulate = parent.modulate
 	self.self_modulate = parent.self_modulate
-	# NOTE: parent material takes priority over the current shaders, causing the world tiles to show up
+	# NOTE: parent material takes priority over the current shaders,
+	# causing the world tiles to show up
 	self.use_parent_material = parent.use_parent_material
 
 	# Save any manually introduced Material change:
