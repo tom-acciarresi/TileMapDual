@@ -1,15 +1,10 @@
 @tool
-class_name TileMapDualEditorPlugin
 extends EditorPlugin
-
-static var instance: TileMapDualEditorPlugin = null
 
 
 # TODO: create a message queue that groups warnings, errors, and messages into categories
 # so that we don't get 300 lines of the same warnings pushed to console every time we undo/redo
 func _enter_tree() -> void:
-	# assign singleton instance
-	instance = self
 	# register custom nodes
 	const TILE_MAP_DUAL_ICON := preload("TileMapDual.svg")
 	add_custom_type(
@@ -45,8 +40,6 @@ func _exit_tree() -> void:
 	remove_custom_type("TileMapDualLegacy")
 	remove_custom_type("CursorDual")
 	remove_custom_type("TileMapDual")
-	# unassign singleton instance
-	instance = null
 	# finish
 	print("plugin TileMapDual unloaded")
 
