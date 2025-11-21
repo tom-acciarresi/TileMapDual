@@ -2,5 +2,5 @@
 .godot/
 /android/
 
-# we dont need to commit this every time
-test/
+# We don't need to commit this every time
+examples/

@@ -7,7 +7,7 @@ class_name AtlasWatcher
 const UNDO_LIMIT = 1024
 
 ## Stores all of the atlas instance id's that have been seen before, to prevent autogen on redo.
-static var _registered_atlases := []
+static var _registered_atlases: Array[int] = []
 
 ## The TileSetWatcher that created this AtlasWatcher. Used to send signals back.
 var parent: TileSetWatcher
@@ -22,7 +22,7 @@ func _init(parent: TileSetWatcher, sid: int, atlas: TileSetAtlasSource) -> void:
 	self.sid = sid
 	self.atlas = atlas
 	atlas.changed.connect(_atlas_changed, ConnectFlags.CONNECT_DEFERRED)
-	var id := atlas.get_instance_id()
+	var id: int = atlas.get_instance_id()
 	# should not autogen if atlas was created through redo, i.e. its instance id already existed
 	if _atlas_is_empty() and id not in _registered_atlases:
 		_registered_atlases.push_back(id)
@@ -42,7 +42,7 @@ func _atlas_is_empty() -> bool:
 func _is_opaque_tile(image: Image, tile: Vector2i, p_threshold: float = 0.1) -> bool:
 	# We cannot use atlas.get_tile_texture_region(tile) as it fails on unregistered tiles.
 	var region := Rect2i(tile * atlas.texture_region_size, atlas.texture_region_size)
-	var sprite := image.get_region(region)
+	var sprite: Image = image.get_region(region)
 	if sprite.is_invisible():
 		return false
 	# We're still not sure if the tile is empty or not.
@@ -58,8 +58,9 @@ func _is_opaque_tile(image: Image, tile: Vector2i, p_threshold: float = 0.1) -> 
 ##[br] Called once, and only once, at the end of the first frame that a texture is created.
 func _detect_autogen() -> void:
 	var size := Vector2i(atlas.texture.get_size()) / atlas.texture_region_size
-	var image := atlas.texture.get_image()
-	var expected_tiles := []
+	var image: Image = atlas.texture.get_image()
+	# NOTE: Literally useless
+	# var expected_tiles := []
 	for y in size.y:
 		for x in size.x:
 			var tile := Vector2i(x, y)

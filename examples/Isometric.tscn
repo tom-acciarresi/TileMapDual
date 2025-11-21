@@ -2,8 +2,8 @@
 
 [ext_resource type="Material" uid="uid://cmbcfxlkxxnwq" path="res://addons/TileMapDual/ghost_material.tres" id="1_i61l1"]
 [ext_resource type="TileSet" uid="uid://7l0cwy2ahtmu" path="res://assets/tileset/iso.tres" id="1_utpqm"]
-[ext_resource type="Script" uid="uid://c6m630v880okx" path="res://addons/TileMapDual/CursorDual.gd" id="2_6mhkb"]
-[ext_resource type="Script" uid="uid://cjk8nronimk5r" path="res://addons/TileMapDual/TileMapDual.gd" id="2_48ct7"]
+[ext_resource type="Script" uid="uid://c6m630v880okx" path="res://addons/TileMapDual/cursor_dual.gd" id="2_6mhkb"]
+[ext_resource type="Script" uid="uid://cjk8nronimk5r" path="res://addons/TileMapDual/tile_map_dual.gd" id="2_48ct7"]
 [ext_resource type="Texture2D" uid="uid://cboyfp0fxdjd5" path="res://assets/cursor.svg" id="3_sdgx4"]
 
 [node name="Isometric" type="Node2D"]

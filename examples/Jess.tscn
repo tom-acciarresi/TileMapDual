@@ -2,9 +2,9 @@
 
 [ext_resource type="Texture2D" uid="uid://crdd7w2f4igs0" path="res://assets/tileset_jess.png" id="1_5s0y4"]
 [ext_resource type="Material" uid="uid://cmbcfxlkxxnwq" path="res://addons/TileMapDual/ghost_material.tres" id="1_px7r8"]
-[ext_resource type="Script" uid="uid://cjk8nronimk5r" path="res://addons/TileMapDual/TileMapDual.gd" id="2_vijsi"]
+[ext_resource type="Script" uid="uid://cjk8nronimk5r" path="res://addons/TileMapDual/tile_map_dual.gd" id="2_vijsi"]
 [ext_resource type="Texture2D" uid="uid://cboyfp0fxdjd5" path="res://assets/cursor.svg" id="3_8ikp2"]
-[ext_resource type="Script" uid="uid://c6m630v880okx" path="res://addons/TileMapDual/CursorDual.gd" id="3_y7vqv"]
+[ext_resource type="Script" uid="uid://c6m630v880okx" path="res://addons/TileMapDual/cursor_dual.gd" id="3_y7vqv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_maiof"]
 texture = ExtResource("1_5s0y4")

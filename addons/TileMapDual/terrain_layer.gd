@@ -2,7 +2,7 @@ class_name TerrainLayer
 extends Resource
 ## A set of _rules usable by a single DisplayLayer.
 
-const TILE_EMPTY: Dictionary = { 'sid': -1, 'tile': Vector2i(-1, -1) }
+const TILE_EMPTY: Dictionary[String, Variant] = { 'sid': -1, 'tile': Vector2i(-1, -1) }
 
 ## A list of which CellNeighbors to care about during terrain checking.
 var terrain_neighborhood: Array = []
@@ -64,7 +64,7 @@ func _init(fields: Dictionary) -> void:
 
 ## Returns the tile that should be used based on the surrounding terrain neighbors
 func apply_rule(terrain_neighbors: Array, cell: Vector2i) -> Dictionary:
-	var is_empty := terrain_neighbors.all(func(terrain): return terrain == -1)
+	var is_empty: bool = terrain_neighbors.all(func(terrain): return terrain == -1)
 	if is_empty:
 		return TILE_EMPTY
 	var normalized_neighbors = terrain_neighbors.map(normalize_terrain)
@@ -111,7 +111,7 @@ func _register_tile(data: TileData, mapping: Dictionary) -> void:
 
 ## Register a new rule for a set of surrounding terrain neighbors
 func _register_rule(terrain_neighbors: Array, mapping: Dictionary) -> void:
-	var node := _rules
+	var node: Dictionary = _rules
 	for terrain in terrain_neighbors:
 		if terrain not in node:
 			node[terrain] = { }
