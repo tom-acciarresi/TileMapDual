@@ -153,13 +153,18 @@ static func neighborhood_preset(
 	var out: Dictionary = available_presets[preset_name].duplicate(true)
 	# All Horizontal neighborhoods can be transposed to Vertical
 	if neighborhood == TerrainDual.Neighborhood.TRIANGLE_VERTICAL:
-		out.size = Util.transpose_vec(out.size)
-		out.fg = Util.transpose_vec(out.fg)
-		out.bg = Util.transpose_vec(out.bg)
+		out.size = _transpose_vec(out.size)
+		out.fg = _transpose_vec(out.fg)
+		out.bg = _transpose_vec(out.bg)
 		for seq in out.layers:
 			for i in seq.size():
-				seq[i] = Util.transpose_vec(seq[i])
+				seq[i] = _transpose_vec(seq[i])
 	return out
+
+
+## Swaps the X and Y axes of a Vector2i.
+static func _transpose_vec(v: Vector2i) -> Vector2i:
+	return Vector2i(v.y, v.x)
 
 
 ##[br] Would you like to automatically create tiles in the atlas?

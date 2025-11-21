@@ -14,6 +14,12 @@ var _tileset_watcher: TileSetWatcher
 var _terrain: TerrainLayer
 
 
+# TODO: transposed(TileSet.CellNeighbor) -> Tileset.CellNeighbor
+## Reverses the direction of a CellNeighbor.
+static func _reverse_neighbor(neighbor: TileSet.CellNeighbor) -> TileSet.CellNeighbor:
+	return (neighbor + 8) % 16
+
+
 func _init(
 		world: TileMapDual,
 		tileset_watcher: TileSetWatcher,
@@ -77,7 +83,7 @@ func update_tiles(cache: TileCache, updated_world_cells: Array) -> void:
 	#push_warning('updating tiles')
 	var already_updated := Set.new()
 	for path: Array in _terrain.display_to_world_neighborhood:
-		path = path.map(Util.reverse_neighbor)
+		path = path.map(_reverse_neighbor)
 		for world_cell: Vector2i in updated_world_cells:
 			var display_cell := follow_path(world_cell, path)
 			if already_updated.insert(display_cell):

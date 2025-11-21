@@ -56,6 +56,20 @@ static func normalize_terrain(terrain):
 	return terrain if terrain != -1 else 0
 
 
+## Merges an Array of keys and an Array of values into a Dictionary.
+static func _arrays_to_dict(keys: Array, values: Array) -> Dictionary:
+	var out := { }
+	for i in keys.size():
+		out[keys[i]] = values[i]
+	return out
+
+
+## Returns a shorthand name for a CellNeighbor.
+static func _neighbor_name(neighbor: TileSet.CellNeighbor) -> String:
+	const DIRECTIONS := ['E', 'SE', 'S', 'SW', 'W', 'NW', 'N', 'NE']
+	return DIRECTIONS[neighbor >> 1]
+
+
 func _init(fields: Dictionary) -> void:
 	self.terrain_neighborhood = fields.terrain_neighborhood
 	self.display_to_world_neighborhood = fields.display_to_world_neighborhood
@@ -102,7 +116,7 @@ func _register_tile(data: TileData, mapping: Dictionary) -> void:
 		if terrain_neighbors.any(func(neighbor): return neighbor != -1):
 			push_warning(
 				"Invalid Tile Neighborhood at %s.\n" % [mapping] +
-				"Expected neighborhood: %s" % [terrain_neighborhood.map(Util.neighbor_name)],
+				"Expected neighborhood: %s" % [terrain_neighborhood.map(_neighbor_name)],
 			)
 		return
 	mapping["prob"] = data.probability
@@ -123,4 +137,4 @@ func _register_rule(terrain_neighbors: Array, mapping: Dictionary) -> void:
 
 ## Utility function for easier printing
 func _neighbors_to_dict(terrain_neighbors: Array) -> Dictionary:
-	return Util.arrays_to_dict(terrain_neighborhood.map(Util.neighbor_name), terrain_neighbors)
+	return _arrays_to_dict(terrain_neighborhood.map(_neighbor_name), terrain_neighbors)
