@@ -1,4 +1,4 @@
-@icon('CursorDual.svg')
+@icon('cursor_dual.svg')
 class_name CursorDual
 extends Sprite2D
 

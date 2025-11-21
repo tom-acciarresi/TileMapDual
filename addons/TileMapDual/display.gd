@@ -1,7 +1,7 @@
 class_name Display
 extends Node2D
 ##[br] A Node designed to hold and manage up to 2 DisplayLayer children.
-##[br] See DisplayLayer.gd for details.
+##[br] See [DisplayLayer] for details.
 
 ## Emitted when the tiles in the map have been edited.
 signal world_tiles_changed(changed: Array)
@@ -17,7 +17,7 @@ enum GridShape {
 }
 
 ##[br] How to deal with every available GridShape.
-##[br] See DisplayLayer.gd for more information about these fields.
+##[br] See [DisplayLayer] for more information about these fields.
 const GRIDS: Dictionary = {
 	GridShape.SQUARE: [
 		{
@@ -76,11 +76,11 @@ const GRIDS: Dictionary = {
 ## The parent TileMapDual to base the terrains off of.
 @export var world: TileMapDual
 
-## See TerrainDual.gd
+## See [TerrainDual]
 var terrain: TerrainDual
 ## The TileCache computed from the last time update() was called.
 var cached_cells := TileCache.new()
-## See TileSetWatcher.gd
+## See [TileSetWatcher]
 var _tileset_watcher: TileSetWatcher
 
 

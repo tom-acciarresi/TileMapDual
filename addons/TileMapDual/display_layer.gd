@@ -8,9 +8,9 @@ extends TileMapLayer
 ##[br] How much to offset this DisplayLayer relative to the main TileMapDual grid.
 ##[br] This is independent of tile size.
 var offset: Vector2
-## See TileSetWatcher.gd
+## See [TileSetWatcher]
 var _tileset_watcher: TileSetWatcher
-## See TerrainDual.gd
+## See [TerrainDual]
 var _terrain: TerrainLayer
 
 

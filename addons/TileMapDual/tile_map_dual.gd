@@ -1,5 +1,5 @@
 @tool
-@icon('TileMapDual.svg')
+@icon('tile_map_dual.svg')
 class_name TileMapDual
 extends TileMapLayer
 

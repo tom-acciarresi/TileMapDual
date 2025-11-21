@@ -2,13 +2,13 @@
 
 [ext_resource type="Material" uid="uid://cmbcfxlkxxnwq" path="res://addons/TileMapDual/ghost_material.tres" id="1_8uun1"]
 [ext_resource type="Texture2D" uid="uid://cvw27ok6bgyxo" path="res://assets/tileset_sand.png" id="1_o1xqh"]
-[ext_resource type="Script" uid="uid://cjk8nronimk5r" path="res://addons/TileMapDual/TileMapDual.gd" id="2_6b7ty"]
+[ext_resource type="Script" uid="uid://cjk8nronimk5r" path="res://addons/TileMapDual/tile_map_dual.gd" id="2_6b7ty"]
 [ext_resource type="Texture2D" uid="uid://cbskedosgard3" path="res://assets/tileset_iso.png" id="3_kieqi"]
 [ext_resource type="Texture2D" uid="uid://djd2mxrucs8g4" path="res://assets/Brick Dual Hori Flat - 64x48.png" id="4_8522r"]
 [ext_resource type="Texture2D" uid="uid://cinoofd3plrj5" path="res://assets/Brick Dual Vert Flat - 48x64.png" id="5_h4nki"]
 [ext_resource type="Texture2D" uid="uid://0i6y8vo4yv57" path="res://assets/Hex Dual Hori Flat - 64x48tri 64x64hex.png" id="6_687vy"]
 [ext_resource type="Texture2D" uid="uid://cysu1ulx03gr3" path="res://assets/Hex Dual Vert Tall Wing - 96x128tri 128x110hex.png" id="7_27gnu"]
-[ext_resource type="Script" uid="uid://dlyqj0u8ckhb0" path="res://addons/TileMapDual/TileMapDualLegacy.gd" id="8_b3wk8"]
+[ext_resource type="Script" uid="uid://dlyqj0u8ckhb0" path="res://addons/TileMapDual/tile_map_dual_legacy.gd" id="8_b3wk8"]
 [ext_resource type="Texture2D" uid="uid://m8rl5lhtnj3e" path="res://docs/v5_structure.png" id="9_l8u6r"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dbhlk"]

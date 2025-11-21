@@ -6,24 +6,24 @@ extends EditorPlugin
 # so that we don't get 300 lines of the same warnings pushed to console every time we undo/redo
 func _enter_tree() -> void:
 	# register custom nodes
-	const TILE_MAP_DUAL_ICON := preload("TileMapDual.svg")
+	const TILE_MAP_DUAL_ICON := preload("tile_map_dual.svg")
 	add_custom_type(
 		"TileMapDual",
 		"TileMapLayer",
-		preload("TileMapDual.gd"),
+		preload("tile_map_dual.gd"),
 		TILE_MAP_DUAL_ICON,
 	)
 	add_custom_type(
 		"TileMapDualLegacy",
 		"TileMapLayer",
-		preload("TileMapDualLegacy.gd"),
+		preload("tile_map_dual_legacy.gd"),
 		TILE_MAP_DUAL_ICON,
 	)
 	add_custom_type(
 		"CursorDual",
 		"Sprite2D",
-		preload("CursorDual.gd"),
-		preload("CursorDual.svg"),
+		preload("cursor_dual.gd"),
+		preload("cursor_dual.svg"),
 	)
 	# load editor-only functions
 	TileMapDual.autotile = autotile
