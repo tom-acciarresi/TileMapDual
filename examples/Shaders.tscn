@@ -4,9 +4,9 @@
 [ext_resource type="Script" uid="uid://cy84qvt88fwk2" path="res://examples/rotating_light.gd" id="1_rr5qa"]
 [ext_resource type="Material" uid="uid://cmbcfxlkxxnwq" path="res://addons/TileMapDual/ghost_material.tres" id="2_14orm"]
 [ext_resource type="TileSet" uid="uid://6h55aginnmsp" path="res://assets/tileset/shader.tres" id="2_h40s4"]
-[ext_resource type="Script" uid="uid://cjk8nronimk5r" path="res://addons/TileMapDual/TileMapDual.gd" id="3_14orm"]
+[ext_resource type="Script" uid="uid://cjk8nronimk5r" path="res://addons/TileMapDual/tile_map_dual.gd" id="3_14orm"]
 [ext_resource type="Texture2D" uid="uid://cboyfp0fxdjd5" path="res://assets/cursor.svg" id="6_pafva"]
-[ext_resource type="Script" uid="uid://c6m630v880okx" path="res://addons/TileMapDual/CursorDual.gd" id="7_ilpa3"]
+[ext_resource type="Script" uid="uid://c6m630v880okx" path="res://addons/TileMapDual/cursor_dual.gd" id="7_ilpa3"]
 
 [node name="Shaders" type="Node2D"]
 

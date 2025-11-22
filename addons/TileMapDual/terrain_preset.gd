@@ -8,14 +8,14 @@ enum Topology {
 }
 
 ## Maps a Neighborhood to a Topology.
-const NEIGHBORHOOD_TOPOLOGIES := {
+const NEIGHBORHOOD_TOPOLOGIES: Dictionary[TerrainDual.Neighborhood, Topology] = {
 	TerrainDual.Neighborhood.SQUARE: Topology.SQUARE,
 	TerrainDual.Neighborhood.ISOMETRIC: Topology.SQUARE,
 	TerrainDual.Neighborhood.TRIANGLE_HORIZONTAL: Topology.TRIANGLE,
 	TerrainDual.Neighborhood.TRIANGLE_VERTICAL: Topology.TRIANGLE,
 }
 ## Contains all of the builtin Terrain presets for each topology
-const PRESETS := {
+const PRESETS: Dictionary[Topology, Dictionary] = {
 	Topology.SQUARE: {
 		'Standard': {
 			'size': Vector2i(4, 4),
@@ -147,7 +147,7 @@ static func neighborhood_preset(
 ) -> Dictionary:
 	var topology: Topology = NEIGHBORHOOD_TOPOLOGIES[neighborhood]
 	# TODO: test when the preset doesn't exist
-	var available_presets = PRESETS[topology]
+	var available_presets: Dictionary = PRESETS[topology]
 	if preset_name not in available_presets:
 		return { 'size': Vector2i.ONE, 'layers': [] }
 	var out: Dictionary = available_presets[preset_name].duplicate(true)
@@ -180,7 +180,7 @@ static func write_default_preset(
 ) -> void:
 	#print('writing default')
 	var neighborhood := TerrainDual.tileset_neighborhood(tile_set)
-	var terrain := new_terrain(
+	var terrain: int = new_terrain(
 		urm,
 		tile_set,
 		atlas.texture.resource_path.get_file(),
@@ -217,7 +217,7 @@ static func _undo_init_terrains(tile_set: TileSet) -> void:
 ##[br] Adds a new terrain type to terrain set 0 for the sprites to use.
 ##[br]
 ##[br] NOTE: Assumes urm.create_action() was called.
-##Does not actually do anything until urm.commit_action() is called.
+## Does not actually do anything until urm.commit_action() is called.
 static func new_terrain(urm: EditorUndoRedoManager, tile_set: TileSet, terrain_name: String) -> int:
 	var terrain: int
 	if tile_set.get_terrain_sets_count() == 0:
@@ -232,12 +232,12 @@ static func new_terrain(urm: EditorUndoRedoManager, tile_set: TileSet, terrain_n
 
 static func _do_new_terrain(tile_set: TileSet, terrain_name: String) -> void:
 	tile_set.add_terrain(0)
-	var terrain := tile_set.get_terrains_count(0) - 1
+	var terrain: int = tile_set.get_terrains_count(0) - 1
 	tile_set.set_terrain_name(0, terrain, "FG -%s" % terrain_name)
 
 
 static func _undo_new_terrain(tile_set: TileSet) -> void:
-	var terrain := tile_set.get_terrains_count(0) - 1
+	var terrain: int = tile_set.get_terrains_count(0) - 1
 	tile_set.remove_terrain(0, terrain)
 
 
@@ -286,7 +286,7 @@ static func _do_write_preset(
 		for i in sequence.size():
 			var tile: Vector2i = sequence[i]
 			atlas.create_tile(tile)
-			var data := atlas.get_tile_data(tile, 0)
+			var data: TileData = atlas.get_tile_data(tile, 0)
 			data.terrain_set = 0
 			for neighbor in terrain_neighborhood:
 				data.set_terrain_peering_bit(
@@ -310,7 +310,7 @@ static func clear_and_resize_atlas(
 		atlas: TileSetAtlasSource,
 		size: Vector2,
 ) -> void:
-	var atlas_data := _save_atlas_data(atlas)
+	var atlas_data: Dictionary[String, Variant] = _save_atlas_data(atlas)
 	urm.add_do_method(TerrainPreset, '_do_clear_and_resize_atlas', atlas, size)
 	urm.add_undo_method(TerrainPreset, '_undo_clear_and_resize_atlas', atlas, atlas_data)
 
@@ -323,22 +323,27 @@ static func _do_clear_and_resize_atlas(atlas: TileSetAtlasSource, size: Vector2)
 	atlas.texture_region_size = size
 
 
-static func _undo_clear_and_resize_atlas(atlas: TileSetAtlasSource, atlas_data: Dictionary) -> void:
+static func _undo_clear_and_resize_atlas(
+		atlas: TileSetAtlasSource,
+		atlas_data: Dictionary[String, Variant],
+) -> void:
 	_load_atlas_data(atlas, atlas_data)
 
 
 ## NOTE: Assumes atlas only has auto-generated tiles.
 ## Does not save peering bit information or anything else.
-static func _save_atlas_data(atlas: TileSetAtlasSource) -> Dictionary:
-	var size_img := atlas.texture.get_size()
-	var size_sprite := atlas.texture_region_size
+static func _save_atlas_data(
+		atlas: TileSetAtlasSource,
+) -> Dictionary[String, Variant]:
+	var size_img: Vector2 = atlas.texture.get_size()
+	var size_sprite: Vector2i = atlas.texture_region_size
 	var size_dims := Vector2i(size_img) / size_sprite
-	var tiles := []
+	var tiles: Array[Array] = []
 	for y in size_dims.y:
-		var row := []
+		var row: Array[bool] = []
 		for x in size_dims.x:
 			var tile := Vector2i(x, y)
-			var exists := atlas.has_tile(tile)
+			var exists: bool = atlas.has_tile(tile)
 			row.push_back(exists)
 		tiles.push_back(row)
 	return {
@@ -348,7 +353,10 @@ static func _save_atlas_data(atlas: TileSetAtlasSource) -> Dictionary:
 	}
 
 
-static func _load_atlas_data(atlas: TileSetAtlasSource, atlas_data: Dictionary) -> void:
+static func _load_atlas_data(
+		atlas: TileSetAtlasSource,
+		atlas_data: Dictionary[String, Variant],
+) -> void:
 	_do_clear_and_resize_atlas(atlas, atlas_data.size_sprite)
 	for y in atlas_data.size_dims.y:
 		for x in atlas_data.size_dims.x:

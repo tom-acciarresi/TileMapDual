@@ -12,7 +12,7 @@ enum Neighborhood {
 }
 
 ## Maps a GridShape to a Neighborhood.
-const GRID_NEIGHBORHOODS = {
+const GRID_NEIGHBORHOODS: Dictionary[Display.GridShape, Neighborhood] = {
 	Display.GridShape.SQUARE: Neighborhood.SQUARE,
 	Display.GridShape.ISO: Neighborhood.ISOMETRIC,
 	Display.GridShape.HALF_OFF_HORI: Neighborhood.TRIANGLE_HORIZONTAL,
@@ -21,7 +21,7 @@ const GRID_NEIGHBORHOODS = {
 	Display.GridShape.HEX_VERT: Neighborhood.TRIANGLE_VERTICAL,
 }
 ## Maps a Neighborhood to a set of atlas terrain neighbors.
-const NEIGHBORHOOD_LAYERS := {
+const NEIGHBORHOOD_LAYERS: Dictionary[Neighborhood, Array] = {
 	Neighborhood.SQUARE: [
 		{
 			# []
@@ -118,7 +118,7 @@ const NEIGHBORHOOD_LAYERS := {
 ## The Neighborhood type of this TerrainDual.
 var neighborhood: Neighborhood
 ## Maps a terrain type to its sprite as registered in the TerrainDual.
-var terrains: Dictionary
+var terrains: Dictionary[int, Dictionary]
 ## The TerrainLayers for this TerrainDual.
 var layers: Array
 var _tileset_watcher: TileSetWatcher
@@ -146,8 +146,8 @@ func read_tileset(tile_set: TileSet) -> void:
 	neighborhood = tileset_neighborhood(tile_set)
 	layers = NEIGHBORHOOD_LAYERS[neighborhood].map(TerrainLayer.new)
 	for i in tile_set.get_source_count():
-		var sid := tile_set.get_source_id(i)
-		var src := tile_set.get_source(sid)
+		var sid: int = tile_set.get_source_id(i)
+		var src: TileSetSource = tile_set.get_source(sid)
 		if src is not TileSetAtlasSource:
 			continue
 		read_atlas(src, sid)
@@ -167,16 +167,16 @@ func read_atlas(atlas: TileSetAtlasSource, sid: int) -> void:
 
 ## Add a new rule for a specific tile in an atlas.
 func read_tile(atlas: TileSetAtlasSource, sid: int, tile: Vector2i) -> void:
-	var data := atlas.get_tile_data(tile, 0)
-	var mapping := { 'sid': sid, 'tile': tile }
-	var terrain_set := data.terrain_set
+	var data: TileData = atlas.get_tile_data(tile, 0)
+	var mapping: Dictionary[String, Variant] = { 'sid': sid, 'tile': tile }
+	var terrain_set: int = data.terrain_set
 	if terrain_set != 0:
 		push_warning(
 			"The tile at %s has a terrain set of %d. \
 			Only terrain set 0 is supported." % [mapping, terrain_set],
 		)
 		return
-	var terrain := data.terrain
+	var terrain: int = data.terrain
 	if terrain != -1:
 		if not terrain in terrains:
 			terrains[terrain] = mapping

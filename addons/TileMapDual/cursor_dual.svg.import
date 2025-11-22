@@ -3,15 +3,16 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bth8306ui4dcx"
-path="res://.godot/imported/CursorDual.svg-af24e4bad2d22f0cc5627c83d35ae307.ctex"
+path="res://.godot/imported/cursor_dual.svg-5d3e91639de0bb1f1616a3d17dccb9e5.ctex"
 metadata={
+"has_editor_variant": true,
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/TileMapDual/CursorDual.svg"
-dest_files=["res://.godot/imported/CursorDual.svg-af24e4bad2d22f0cc5627c83d35ae307.ctex"]
+source_file="res://addons/TileMapDual/cursor_dual.svg"
+dest_files=["res://.godot/imported/cursor_dual.svg-5d3e91639de0bb1f1616a3d17dccb9e5.ctex"]
 
 [params]
 
@@ -39,5 +40,5 @@ process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
 svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false
+editor/scale_with_editor_scale=true
+editor/convert_colors_with_editor_theme=true
