@@ -117,7 +117,7 @@ class Set extends Resource:
 	const DUMMY = null
 
 	## The internal Dictionary that holds this Set's items as keys.
-	var data: Dictionary = {}
+	var data: Dictionary = { }
 
 
 	func _init(initial_data: Variant = []) -> void:
@@ -143,7 +143,7 @@ class Set extends Resource:
 
 	## Deletes all items in this Set.
 	func clear() -> void:
-		data = {}
+		data = { }
 
 
 	## Merges an Array's items or Dict's keys into the Set.
